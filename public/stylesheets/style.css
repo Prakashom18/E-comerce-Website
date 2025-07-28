@@ -1,0 +1,49 @@
+/* Profile button styles */
+.profile-button {
+    position: fixed; /* Keeps the button fixed */
+    right: 20px; /* Positions the button 20px from the right */
+    bottom: 20px; /* Positions the button 20px from the bottom */
+    width: 50px; /* Width of the circular button */
+    height: 50px; /* Height of the circular button */
+    background-color: #4CAF50; /* Background color */
+    color: white; /* Text color */
+    border-radius: 50%; /* Makes the button circular */
+    display: flex; /* Centers the text */
+    align-items: center; /* Centers the text vertically */
+    justify-content: center; /* Centers the text horizontally */
+    text-decoration: none; /* Removes underline from link */
+    font-size: 24px; /* Size of the text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a shadow for better visibility */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.profile-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Product container styles */
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Product card styles */
+.product-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px; /* Set a width for product cards */
+    text-align: center;
+    background-color: white;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a light shadow */
+}
+
+.product-card img {
+    width: 100%; /* Responsive image */
+    height: auto;
+    border-radius: 5px; /* Slightly rounded corners for images */
+    margin-bottom: 10px; /* Space below the image */
+}

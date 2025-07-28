@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-4">Your Cart</h1>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <% if (cartItems && cartItems.length > 0) { %>
+                <ul>
+                    <% cartItems.forEach(item => { %>
+                        <li class="flex justify-between items-start mb-4 mt-2">
+                            <div class="flex items-start">
+                                <img src="<%= item.productId.imageUrl %>" alt="<%= item.productId.name %>" class="w-32 h-32 object-cover rounded mr-4">
+                                <div class="flex-1">
+                                    <h2 class="text-lg font-semibold text-xl mb-1"><%= item.productId.name %></h2>
+                                    <p class="text-md text-gray-600 mb-1"><%= item.productId.description %></p>
+                                    <p class="text-lg font-semibold">Price: $<%= item.productId.price.toFixed(2) %></p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <button class="bg-red-600 text-white py-1 px-2 rounded mb-2" onclick="removeFromCart('<%= item._id %>')">Remove</button>
+                                <button class="bg-green-500 text-white py-2 px-4 rounded" onclick="buyNow('<%= item.productId._id %>', '<%= item.quantity %>')">Buy Now</button>
+                            </div>
+                        </li>
+                        <hr class="mt-4 border-gray-300">
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>Your cart is empty.</p>
+            <% } %>
+        </div>
+        <a href="/products" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">Continue Shopping</a>
+    </div>
+
+    <script>
+        function removeFromCart(cartItemId) {
+            $.ajax({
+                url: `/cart/remove/${cartItemId}`,
+                type: 'DELETE',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert('Error removing item');
+                }
+            });
+        }
+
+        function buyNow(productId, quantity) {
+            const url = `/checkout?productId=${productId}&quantity=${quantity}`;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

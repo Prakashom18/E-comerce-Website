@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Order</title>
+</head>
+<body>
+    <h1>Create New Order</h1>
+    <form action="/orders/new" method="POST">
+        <label for="products">Products (comma separated):</label>
+        <input type="text" id="products" name="products" required>
+        
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" required>
+        
+        <label for="paymentStatus">Payment Status:</label>
+        <input type="text" id="paymentStatus" name="paymentStatus" required>
+        
+        <label for="trackingInfo">Tracking Info:</label>
+        <input type="text" id="trackingInfo" name="trackingInfo">
+
+        <button type="submit">Create Order</button>
+    </form>
+    <nav>
+        <a href="/profile">Profile</a>
+        <a href="/orders">Orders</a>
+    </nav>
+</body>
+</html>

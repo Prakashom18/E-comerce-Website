@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        // Update total amount when quantity changes
+        function updateTotalAmount() {
+            const price = parseFloat(document.getElementById('productPrice').innerText);
+            const quantity = parseInt(document.getElementById('quantityDisplay').innerText);
+            const shippingCharge = parseFloat(document.getElementById('shippingChargeValue').innerText);
+
+            // Validate numbers to avoid NaN
+            if (isNaN(price) || isNaN(quantity) || isNaN(shippingCharge)) {
+                console.error('Invalid number(s) in calculation');
+                return;
+            }
+
+            const totalAmount = (price * quantity) + shippingCharge; // Calculate total amount
+
+            // Update the displayed total amount
+            document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
+            document.getElementById('hiddenTotalAmount').value = totalAmount.toFixed(2); // Update hidden input for form submission
+            document.getElementById('hiddenTotalQuantity').value = quantity; // Update hidden input for quantity
+        }
+
+        // Function to change quantity
+        function changeQuantity(amount) {
+            const quantityDisplay = document.getElementById('quantityDisplay');
+            let currentQuantity = parseInt(quantityDisplay.innerText);
+            currentQuantity += amount;
+
+            // Ensure quantity stays within valid range
+            if (currentQuantity < 1) currentQuantity = 1; // Minimum of 1
+            quantityDisplay.innerText = currentQuantity;
+
+            updateTotalAmount(); // Update the total amount after changing the quantity
+        }
+
+        window.onload = updateTotalAmount; // Initialize the total amount on page load
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl"> <!-- Adjusted container size -->
+            <h1 class="text-3xl font-bold mb-4">Checkout</h1>
+            <div class="flex flex-row">
+                <div class="flex-1 pr-8"> <!-- Left side for product details and user info -->
+                    <h2 class="text-2xl font-semibold mb-2"><%= product.name %></h2>
+                    <p class="text-gray-700 mb-2"><%= product.description %></p>
+                    <p class="text-lg font-semibold mb-2">Price: $<span id="productPrice"><%= product.price.toFixed(2) %></span></p>
+
+                    <!-- Shipping charge -->
+                    <p class="text-lg font-semibold mb-2">Shipping Charge: $<span id="shippingChargeValue">5.00</span></p>
+
+                    <!-- Quantity controls -->
+                    <div class="flex items-center mb-4">
+                        <label class="block text-lg font-semibold mr-2">Quantity:</label>
+                        <button type="button" onclick="changeQuantity(-1)" class="bg-gray-300 text-black rounded px-2 py-1">-</button>
+                        <span id="quantityDisplay" class="mx-2 text-lg font-semibold">1</span>
+                        <button type="button" onclick="changeQuantity(1)" class="bg-gray-300 text-black rounded px-2 py-1">+</button>
+                    </div>
+
+                    <p class="text-lg font-bold mt-4">Total Amount: $<span id="totalAmount"><%= (product.price + 5).toFixed(2) %></span></p>
+
+                    <form action="/checkout/complete" method="POST" class="mt-4">
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <input type="hidden" id="hiddenTotalAmount" name="totalAmount" value="<%= (product.price + 5).toFixed(2) %>">
+                        <input type="hidden" id="hiddenTotalQuantity" name="totalQuantity" value="1"> <!-- Add hidden field for quantity -->
+
+                        <!-- New fields for user information -->
+                        <div class="mt-4">
+                            <label for="email" class="block text-lg font-semibold">Email:</label>
+                            <input type="email" id="email" name="email" required class="mt-2 border rounded w-full p-2">
+                        </div>
+                        <div class="mt-4">
+                            <label for="phone" class="block text-lg font-semibold">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" required class="mt-2 border rounded w-full p-2">
+                        </div>
+                        <div class="mt-4">
+                            <label for="streetAddress" class="block text-lg font-semibold">Street Address:</label>
+                            <input type="text" id="streetAddress" name="streetAddress" required class="mt-2 border rounded w-full p-2">
+                        </div>
+                        <div class="mt-4">
+                            <label for="temporaryAddress" class="block text-lg font-semibold">Temporary Address:</label>
+                            <input type="text" id="temporaryAddress" name="temporaryAddress" class="mt-2 border rounded w-full p-2">
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="paymentMethod" class="block text-lg font-semibold">Payment Method:</label>
+                            <select name="paymentMethod" class="mt-2 border rounded w-full p-2">
+                                <option value="credit-card">Credit Card</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="cash-on-delivery">Cash on Delivery</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded mt-4">Confirm Purchase</button>
+                    </form>
+                </div>
+                <div class="flex-none"> <!-- Right side for product image -->
+                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="w-48 h-auto rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+</head>
+<body>
+    <h1>Your Orders</h1>
+    <ul>
+        <% orders.forEach(order => { %>
+            <li>
+                <strong>Products:</strong> <%= order.products.join(', ') %> | 
+                <strong>Status:</strong> <%= order.status %> | 
+                <strong>Payment Status:</strong> <%= order.paymentStatus %> | 
+                <strong>Tracking Info:</strong> <%= order.trackingInfo %>
+            </li>
+        <% }) %>
+    </ul>
+    <a href="/orders/new">Create New Order</a>
+    <nav>
+        <a href="/profile">Profile</a>
+        <a href="/">Home</a>
+    </nav>
+</body>
+</html>

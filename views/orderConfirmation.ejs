@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="/path/to/your/styles.css">
+    <style>
+        /* Inline styles for quick reference; consider moving to external stylesheet */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #343a40;
+        }
+        img {
+            max-width: 200px; /* Reduced image size */
+            height: auto;
+            border-radius: 4px;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: row; /* Horizontal layout */
+            justify-content: space-between; /* Space between elements */
+            align-items: flex-start; /* Align items at the start */
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <p><strong>Order Status:</strong> <%= order.status %></p>
+        <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+
+        <div class="flex-container">
+            <div class="flex-1"> <!-- Left side for product details -->
+                <h3 class="text-xl font-semibold mb-2">Product Details</h3>
+                <p><strong>Name:</strong> <%= order.productId.name %></p>
+                <p><strong>Description:</strong> <%= order.productId.description %></p>
+                <p><strong>Quantity:</strong> <%= order.totalQuantity %></p>
+                <p><strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %></p>
+            </div>
+            <div class="flex-none ml-4"> <!-- Right side for product image -->
+                <img src="<%= order.productId.imageUrl %>" alt="<%= order.productId.name %>">
+            </div>
+        </div>
+
+        <!-- Display user information -->
+        <h3 class="text-xl font-semibold mb-2 mt-4">User Information</h3>
+        <p><strong>Email:</strong> <%= order.email %></p>
+        <p><strong>Phone Number:</strong> <%= order.phone %></p>
+        <p><strong>Street Address:</strong> <%= order.streetAddress %></p>
+        <p><strong>Temporary Address:</strong> <%= order.temporaryAddress %></p>
+
+        <a href="/products">Return to Products</a>
+    </div>
+</body>
+</html>
