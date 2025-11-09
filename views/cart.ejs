@@ -14,21 +14,33 @@
             <% if (cartItems && cartItems.length > 0) { %>
                 <ul>
                     <% cartItems.forEach(item => { %>
-                        <li class="flex justify-between items-start mb-4 mt-2">
-                            <div class="flex items-start">
-                                <img src="<%= item.productId.imageUrl %>" alt="<%= item.productId.name %>" class="w-32 h-32 object-cover rounded mr-4">
-                                <div class="flex-1">
-                                    <h2 class="text-lg font-semibold text-xl mb-1"><%= item.productId.name %></h2>
-                                    <p class="text-md text-gray-600 mb-1"><%= item.productId.description %></p>
-                                    <p class="text-lg font-semibold">Price: $<%= item.productId.price.toFixed(2) %></p>
+                        <% if(item.productId) { %>
+                            <li class="flex justify-between items-start mb-4 mt-2">
+                                <div class="flex items-start">
+                                    <img src="<%= item.productId.imageUrl %>" alt="<%= item.productId.name %>" class="w-32 h-32 object-cover rounded mr-4">
+                                    <div class="flex-1">
+                                        <h2 class="text-lg font-semibold text-xl mb-1"><%= item.productId.name %></h2>
+                                        <p class="text-md text-gray-600 mb-1"><%= item.productId.description %></p>
+                                        <p class="text-lg font-semibold">Price: $<%= item.productId.price.toFixed(2) %></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex flex-col items-end">
-                                <button class="bg-red-600 text-white py-1 px-2 rounded mb-2" onclick="removeFromCart('<%= item._id %>')">Remove</button>
-                                <button class="bg-green-500 text-white py-2 px-4 rounded" onclick="buyNow('<%= item.productId._id %>', '<%= item.quantity %>')">Buy Now</button>
-                            </div>
-                        </li>
-                        <hr class="mt-4 border-gray-300">
+                                <div class="flex flex-col items-end">
+                                    <button class="bg-red-600 text-white py-1 px-2 rounded mb-2" onclick="removeFromCart('<%= item._id %>')">Remove</button>
+                                    <button class="bg-green-500 text-white py-2 px-4 rounded" onclick="buyNow('<%= item.productId._id %>', '<%= item.quantity %>')">Buy Now</button>
+                                </div>
+                            </li>
+                            <hr class="mt-4 border-gray-300">
+                        <% } else { %>
+                            <li class="flex justify-between items-center mb-4 mt-2">
+                                <div class="flex-1 text-red-500 font-semibold">
+                                    Product not found. It may have been removed from the store.
+                                </div>
+                                <div>
+                                    <button class="bg-red-600 text-white py-1 px-2 rounded" onclick="removeFromCart('<%= item._id %>')">Remove</button>
+                                </div>
+                            </li>
+                            <hr class="mt-4 border-gray-300">
+                        <% } %>
                     <% }); %>
                 </ul>
             <% } else { %>
