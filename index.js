@@ -133,6 +133,82 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
     }
 });
 
+//esewa
+app.post('/checkout/complete', authenticateToken, async (req, res) => {
+    const { productId, totalAmount, totalQuantity, fullName, email, phone, streetAddress, temporaryAddress, paymentMethod } = req.body;
+
+    try {
+        const product = await Product.findById(productId);
+        if (!product) return res.status(404).send('Product not found');
+
+        // Save order + user info
+        const order = new Order({
+            userId: req.user.userId,
+            products: [{ productId, quantity: totalQuantity, price: product.price }],
+            totalAmount: parseFloat(totalAmount),
+            paymentMethod,
+            status: 'Pending',
+            customerInfo: { fullName, email, phone, streetAddress, temporaryAddress } // store info
+        });
+
+        await order.save();
+
+        // Redirect to payment based on method
+        if (paymentMethod === 'esewa') {
+            // Redirect to eSewa sandbox payment page
+            res.render('esewa_payment', { order, product });
+        } else if (paymentMethod === 'khalti') {
+            // Redirect to Khalti payment page (you need Khalti integration here)
+            res.render('khalti_payment', { order, product });
+        } else {
+            res.redirect(`/orderConfirmation/${order._id}`);
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+// eSewa payment success callback
+app.post('/esewa/success', async (req, res) => {
+    const { pid } = req.body; // Order ID sent as pid
+    try {
+        const order = await Order.findById(pid);
+        if (!order) return res.status(404).send('Order not found');
+
+        // Update order status
+        order.status = 'Paid';
+        order.paymentStatus = 'Completed';
+        await order.save();
+
+        res.redirect(`/orderConfirmation/${order._id}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+// eSewa payment failure callback
+app.post('/esewa/failure', async (req, res) => {
+    const { pid } = req.body; // Order ID sent as pid
+    try {
+        const order = await Order.findById(pid);
+        if (!order) return res.status(404).send('Order not found');
+
+        // Update order status
+        order.status = 'Failed';
+        order.paymentStatus = 'Failed';
+        await order.save();
+
+        res.send('Payment failed. Please try again.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+
+
 // User Logout
 app.post('/logout', authenticateToken, (req, res) => {
     res.clearCookie('token');
@@ -192,56 +268,44 @@ app.get('/checkout', authenticateToken, async (req, res) => {
 });
 
 // Complete Checkout Route
+// Correct Checkout Complete Route
+// Complete Checkout Route
 app.post('/checkout/complete', authenticateToken, async (req, res) => {
-    const { products, totalAmount, paymentMethod } = req.body; // Assume products is an array of { productId, quantity }
+    const { productId, totalAmount, totalQuantity, fullName, email, phone, streetAddress, temporaryAddress, paymentMethod } = req.body;
+
+    if (!productId || !totalAmount || !totalQuantity || !fullName || !email || !phone || !streetAddress || !paymentMethod) {
+        return res.send('All fields are required');
+    }
 
     try {
-        if (!products || !totalAmount || !paymentMethod) {
-            return res.status(400).send('All fields are required');
-        }
+        const product = await Product.findById(productId);
+        if (!product) return res.send('Product not found');
 
-        // Create the order
-        const orderProducts = await Promise.all(products.map(async ({ productId, quantity }) => {
-            const product = await Product.findById(productId);
-            if (!product) throw new Error('Product not found');
-
-            return {
-                productId,
-                quantity,
-                price: product.price // Store price at the time of order
-            };
-        }));
-
+        // Save order + user info
         const order = new Order({
-            products: orderProducts, // Updated to store product details
             userId: req.user.userId,
+            products: [{ productId, quantity: totalQuantity, price: product.price }],
             totalAmount: parseFloat(totalAmount),
-            paymentStatus: 'Pending', // You may want to adjust this based on payment processing
+            paymentMethod,
             status: 'Pending',
+            customerInfo: { fullName, email, phone, streetAddress, temporaryAddress }
         });
 
-        // Save the order to the database
         await order.save();
 
-        // Add the order reference to the user's order history
-        await User.findByIdAndUpdate(req.user.userId, {
-            $push: { orderHistory: order._id }
-        });
+        if (paymentMethod === 'esewa') {
+            res.render('esewa_payment', { order, product }); // Redirect to eSewa sandbox
+        } else {
+            res.redirect(`/orderConfirmation/${order._id}`);
+        }
 
-        // Render the order confirmation page
-        res.render('orderConfirmation', {
-            order: {
-                products: orderProducts, // Display product details in the confirmation
-                totalAmount: order.totalAmount,
-                paymentMethod,
-                status: order.status,
-            },
-        });
-    } catch (error) {
-        console.error('Error during checkout completion:', error);
+    } catch (err) {
+        console.error(err);
         res.status(500).send('Server error');
     }
 });
+
+
 
 // Start the Server
 app.listen(3000, () => {
