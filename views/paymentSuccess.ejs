@@ -1,21 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Success</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Success</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    body {
+        background: linear-gradient(135deg, #fffaf0, #fff8f2);
+        font-family: 'Poppins', sans-serif;
+    }
 
-    <div class="bg-white p-10 rounded shadow-md text-center">
-        <h1 class="text-3xl font-bold mb-6 text-green-600">✅ Your payment is successful!</h1>
-        <a href="/products">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow-md transition duration-200">
-                Continue Shopping
-            </button>
-        </a>
-    </div>
+    .card {
+        max-width: 450px;
+        margin: 100px auto;
+        padding: 40px 30px;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* ✅ Circular Tick Animation */
+    .checkmark {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 4;
+        stroke: #10b981;
+        stroke-miterlimit: 10;
+        margin: 0 auto 20px;
+        box-shadow: inset 0px 0px 0px #10b981;
+        animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    }
+
+    .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 4;
+        stroke-miterlimit: 10;
+        stroke: #10b981;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.7s forwards;
+    }
+
+    @keyframes stroke {
+        100% { stroke-dashoffset: 0; }
+    }
+
+    @keyframes scale {
+        0%, 100% { transform: none; }
+        50% { transform: scale3d(1.1, 1.1, 1); }
+    }
+
+    @keyframes fill {
+        100% { box-shadow: inset 0px 0px 0px 80px #10b981; }
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #10b981;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #4b5563;
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    .btn {
+        padding: 12px 32px;
+        background: linear-gradient(90deg, #f97316, #fb923c);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 18px rgba(249, 115, 22, 0.4);
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <!-- ✅ Animated Checkmark -->
+    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="checkmark__check" fill="none" stroke="#fff" stroke-width="4" d="M14 27l7 7 16-16"/>
+    </svg>
+
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your purchase. Your payment has been processed successfully.</p>
+    
+    <a href="/products">
+        <button class="btn">Continue Shopping</button>
+    </a>
+</div>
 
 </body>
 </html>

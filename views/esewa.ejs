@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pay with eSewa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #fef3e7; }
+    .card { max-width: 500px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+    .btn { padding: 12px 20px; background: linear-gradient(90deg, #10b981, #34d399); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 class="text-2xl font-bold text-green-700 mb-4">Confirm Payment</h1>
+    <p class="mb-2">Amount: Rs. <%= amount %></p>
+    <form action="<%= esewaUrl %>" method="POST">
+      <input type="hidden" name="amount" value="<%= amount %>">
+      <input type="hidden" name="tax_amount" value="<%= tax_amount %>">
+      <input type="hidden" name="total_amount" value="<%= amount %>">
+      <input type="hidden" name="transaction_uuid" value="<%= transaction_uuid %>">
+      <input type="hidden" name="product_code" value="<%= product_code %>">
+      <input type="hidden" name="product_service_charge" value="<%= product_service_charge %>">
+      <input type="hidden" name="product_delivery_charge" value="<%= product_delivery_charge %>">
+      <input type="hidden" name="success_url" value="http://localhost:3000/esewa/success">
+      <input type="hidden" name="failure_url" value="http://localhost:3000/esewa/failure">
+      <input type="hidden" name="signed_field_names" value="total_amount,transaction_uuid,product_code">
+      <input type="hidden" name="signature" value="<%= signature %>">
+      <button type="submit" class="btn">Pay with eSewa</button>
+    </form>
+  </div>
+</body>
+</html>

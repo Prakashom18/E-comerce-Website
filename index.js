@@ -17,7 +17,7 @@ const app = express();
 // ----------------- Config -----------------
 const JWT_SECRET = 'your_jwt_secret_key'; // Use environment variable in production
 const secretKey = '8gBm/:&EnhH.1/q';      // eSewa sandbox secret key
-const shippingCharge = 1000.00;
+const shippingCharge = 50.00;
 const esewaUrl = 'https://rc-epay.esewa.com.np/api/epay/main/v2/form'; // ✅ Correct sandbox endpoint
 
 // Middleware Setup
@@ -141,6 +141,21 @@ app.post('/profile/edit', authenticateToken, async (req, res) => {
         res.status(500).send("An error occurred while updating your profile.");
     }
 });
+
+// index.js or orders.js router
+app.get('/orders/new', (req, res) => {
+    // Make sure user is logged in
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    // Render a page to confirm the order or select products
+    res.render('newOrder', {
+        user: req.session.user,
+        cart: req.session.cart || []
+    });
+});
+
 
 // ----------------- Checkout Routes -----------------
 app.get('/checkout/:productId', authenticateToken, async (req, res) => {
