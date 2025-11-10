@@ -1,130 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Products</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        /* Profile and cart button styles */
-        .fixed-buttons {
-            position: fixed;
-            right: 20px;
-            top: 10px;
-            z-index: 50;
-            display: flex;
-            gap: 10px;
-            transition: opacity 0.3s ease;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #fef3e7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        /* Main container to align items */
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding-top: 80px;
-        }
+    .toast {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #f97316;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      font-weight: 600;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Container for products */
-        .products-container {
-            flex: 1;
-            margin-right: 20px;
-        }
+    .fixed-buttons {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .fixed-buttons a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+    }
+    .fixed-buttons a:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+    .profile-btn {
+      background: linear-gradient(45deg, #10b981, #34d399);
+    }
+    .cart-btn {
+      background: linear-gradient(45deg, #f97316, #fb923c);
+    }
 
-        /* Container for header and buttons */
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            flex-wrap: wrap;
-        }
-    </style>
+    .product-card {
+      transition: all 0.3s ease;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    .btn-gradient {
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      flex: 1;
+      text-align: center;
+    }
+    .btn-add {
+      background: linear-gradient(90deg, #f97316, #fb923c);
+      color: white;
+    }
+    .btn-add:hover {
+      background: linear-gradient(90deg, #fb923c, #f97316);
+      transform: scale(1.05);
+    }
+    .btn-buy {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      color: white;
+    }
+    .btn-buy:hover {
+      background: linear-gradient(90deg, #34d399, #10b981);
+      transform: scale(1.05);
+    }
+
+    .header-title {
+      color: #ea580c;
+      font-weight: 700;
+    }
+    .header-subtitle {
+      color: #16a34a;
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
-    <div class="header-container">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 w-full text-left">Available Products</h1>
-        <!-- Fixed buttons for profile and cart -->
-        <div class="fixed-buttons" id="fixedButtons">
-            <a href="/profile" class="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 transition duration-200">
-                <img src="https://e7.pngegg.com/pngimages/306/37/png-clipart-node-js-logo-node-js-javascript-web-application-express-js-computer-software-others-miscellaneous-text-thumbnail.png" alt="Profile" class="w-8 h-8 rounded-full mr-2" />
-                <span>Profile</span>
-            </a>
-            <a href="/cart" class="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 transition duration-200">
-                <img src="https://media.istockphoto.com/id/1206806317/vector/shopping-cart-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=1RRQJs5NDhcB67necQn1WCpJX2YMfWZ4rYi1DFKlkNA=" alt="Cart" class="w-8 h-8 rounded-full mr-2" />
-                <span>Your Cart</span>
-            </a>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <div class="fixed-buttons">
+    <a href="/profile" class="profile-btn">
+      <img src="https://e7.pngegg.com/pngimages/306/37/png-clipart-node-js-logo-node-js-javascript-web-application-express-js-computer-software-others-miscellaneous-text-thumbnail.png" class="w-7 h-7 rounded-full">
+      Profile
+    </a>
+    <a href="/cart" class="cart-btn">
+      <img src="https://media.istockphoto.com/id/1206806317/vector/shopping-cart-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=1RRQJs5NDhcB67necQn1WCpJX2YMfWZ4rYi1DFKlkNA=" class="w-7 h-7 rounded-full">
+      Cart
+    </a>
+  </div>
+
+  <header class="text-center py-8">
+    <h1 class="text-4xl md:text-5xl header-title font-bold">Available Products</h1>
+    <p class="mt-2 header-subtitle text-lg md:text-xl">Explore and shop the latest products with style!</p>
+  </header>
+
+  <main class="container mx-auto px-4 pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% products.forEach(product => { %>
+      <div class="bg-white product-card flex flex-col md:flex-row p-4 gap-4 items-center">
+        <div class="flex-shrink-0 flex justify-center items-center bg-orange-50 rounded-xl p-4">
+          <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="w-32 h-32 object-cover rounded-xl">
         </div>
-    </div>
-
-    <div class="container products-container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <% products.forEach(product => { %>
-                <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
-                    <div class="flex-shrink-0 flex justify-center items-center">
-                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="w-32 h-32 object-cover rounded">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h2 class="text-xl font-semibold"><%= product.name %></h2>
-                        <p class="text-gray-600"><%= product.description %></p>
-                        <p class="mt-2">Price: $<%= product.price.toFixed(2) %></p>
-                        <p>Available Stock: <%= product.stock %></p>
-                        <div class="flex justify-between mt-4">
-                            <button class="bg-blue-500 text-white rounded px-4 py-2 add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
-                            <button class="bg-green-500 text-white rounded px-4 py-2 buy-now" data-product-id="<%= product._id %>">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            <% }); %>
+        <div class="flex-1">
+          <h2 class="text-xl font-semibold text-orange-800"><%= product.name %></h2>
+          <p class="text-gray-600 mt-1"><%= product.description %></p>
+          <p class="mt-2 font-bold text-green-700">Price: Rs. <%= product.price %></p>
+          <p class="text-gray-500">Stock: <%= product.stock %></p>
+          <div class="flex justify-between mt-4 gap-2">
+            <button class="btn-gradient btn-add add-to-cart px-4 py-2" data-product-id="<%= product._id %>">Add to Cart</button>
+            <button class="btn-gradient btn-buy buy-now px-4 py-2" data-product-id="<%= product._id %>">Buy Now</button>
+          </div>
         </div>
+      </div>
+      <% }); %>
     </div>
+  </main>
 
-    <script>
-        const fixedButtons = document.getElementById('fixedButtons');
+  <script>
+    const fixedButtons = document.querySelector('.fixed-buttons');
+    const toast = document.getElementById('toast');
 
-        // Hide the buttons on scroll
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                fixedButtons.style.opacity = '0';
-            } else {
-                fixedButtons.style.opacity = '1';
-            }
-        });
+    window.addEventListener('scroll', () => {
+      fixedButtons.style.opacity = window.scrollY > 50 ? '0' : '1';
+    });
 
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', async (event) => {
-                const productId = event.target.dataset.productId;
+    function showToast(message, color = '#f97316') {
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
 
-                try {
-                    const response = await fetch(`/cart/add`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ productId, quantity: 1 }) // Always add 1 by default
-                    });
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', async (event) => {
+        const productId = event.target.dataset.productId;
+        try {
+          const response = await fetch(`/cart/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId, quantity: 1 })
+          });
+          const result = await response.json();
+          if (response.ok) {
+            showToast(result.message || 'Product added to cart!', '#f97316');
+          } else {
+            showToast(result.error || 'Failed to add product!', '#ef4444');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('Something went wrong. Try again.', '#ef4444');
+        }
+      });
+    });
 
-                    const result = await response.json();
-                    if (response.ok) {
-                        alert(result.message || 'Product added to cart!');
-                    } else {
-                        alert(result.error || 'Failed to add product to cart.');
-                    }
-                } catch (error) {
-                    console.error('Error adding product to cart:', error);
-                    alert('An error occurred. Please try again.');
-                }
-            });
-        });
-
-        document.querySelectorAll('.buy-now').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const productId = event.target.dataset.productId;
-
-                // Directly navigate to checkout with quantity set to 1
-                window.location.href = `/checkout/${productId}?quantity=1`;
-            });
-        });
-    </script>
+    document.querySelectorAll('.buy-now').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const productId = event.target.dataset.productId;
+        window.location.href = `/checkout/${productId}?quantity=1`;
+      });
+    });
+  </script>
 </body>
 </html>

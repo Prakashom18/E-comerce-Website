@@ -1,97 +1,148 @@
-<!-- views/checkout.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script>
-    const shippingCharge = 5.00;
-
-    function updateTotalAmount() {
-        const price = parseFloat(document.getElementById('productPrice').innerText);
-        const quantity = parseInt(document.getElementById('quantityDisplay').innerText);
-        const totalAmount = (price * quantity) + shippingCharge;
-
-        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
-        document.getElementById('hiddenTotalAmount').value = totalAmount.toFixed(2);
-        document.getElementById('hiddenTotalQuantity').value = quantity;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #fef3e7, #d9f99d); /* Orange to Green gradient */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
     }
 
-    function changeQuantity(amount) {
-        let quantityDisplay = document.getElementById('quantityDisplay');
-        let currentQuantity = parseInt(quantityDisplay.innerText) + amount;
-        if (currentQuantity < 1) currentQuantity = 1;
-        quantityDisplay.innerText = currentQuantity;
-        updateTotalAmount();
+    .checkout-container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
-    window.onload = updateTotalAmount;
-</script>
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 20px;
+      padding: 20px;
+      background: linear-gradient(145deg, #fef9f0, #fef3e7);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .product-card img {
+      border-radius: 20px;
+      object-fit: cover;
+      max-height: 300px;
+    }
+
+    .product-info h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ea580c;
+      margin-bottom: 10px;
+    }
+
+    .product-info p {
+      font-size: 1.1rem;
+      margin: 5px 0;
+      color: #16a34a;
+    }
+
+    .product-info .total {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 10px;
+      color: #ea580c;
+    }
+
+    .reviews i {
+      color: #facc15; /* yellow stars */
+    }
+
+    .payment-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(90deg, #34d399, #10b981); /* green gradient */
+      color: white;
+      font-weight: 700;
+      padding: 14px 30px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .payment-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+
+    @media(max-width: 768px){
+      .product-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .product-card img {
+        width: 80%;
+        height: auto;
+      }
+
+      .product-info h3 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
-<div class="flex justify-center items-center min-h-screen">
-<div class="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
-<h1 class="text-3xl font-bold mb-4">Checkout</h1>
-<div class="flex flex-row">
-    <div class="flex-1 pr-8">
-        <h2 class="text-2xl font-semibold mb-2"><%= product.name %></h2>
-        <p class="text-gray-700 mb-2"><%= product.description %></p>
-        <p class="text-lg font-semibold mb-2">Price: $<span id="productPrice"><%= product.price.toFixed(2) %></span></p>
-        <p class="text-lg font-semibold mb-2">Shipping Charge: $<span id="shippingChargeValue"><%= shippingCharge.toFixed(2) %></span></p>
+<body>
 
-        <div class="flex items-center mb-4">
-            <label class="block text-lg font-semibold mr-2">Quantity:</label>
-            <button type="button" onclick="changeQuantity(-1)" class="bg-gray-300 text-black rounded px-2 py-1">-</button>
-            <span id="quantityDisplay" class="mx-2 text-lg font-semibold">1</span>
-            <button type="button" onclick="changeQuantity(1)" class="bg-gray-300 text-black rounded px-2 py-1">+</button>
-        </div>
-
-        <p class="text-lg font-bold mt-4">Total Amount: $<span id="totalAmount"><%= (product.price + shippingCharge).toFixed(2) %></span></p>
-
-        <form action="/checkout/complete" method="POST" class="mt-4">
-            <input type="hidden" name="productId" value="<%= product._id %>">
-            <input type="hidden" id="hiddenTotalAmount" name="totalAmount" value="<%= (product.price + shippingCharge).toFixed(2) %>">
-            <input type="hidden" id="hiddenTotalQuantity" name="totalQuantity" value="1">
-
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Full Name:</label>
-                <input type="text" name="fullName" required class="mt-2 border rounded w-full p-2">
-            </div>
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Email:</label>
-                <input type="email" name="email" required class="mt-2 border rounded w-full p-2">
-            </div>
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Phone:</label>
-                <input type="tel" name="phone" required class="mt-2 border rounded w-full p-2">
-            </div>
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Street Address:</label>
-                <input type="text" name="streetAddress" required class="mt-2 border rounded w-full p-2">
-            </div>
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Temporary Address:</label>
-                <input type="text" name="temporaryAddress" class="mt-2 border rounded w-full p-2">
-            </div>
-
-            <div class="mt-4">
-                <label class="block text-lg font-semibold">Payment Method:</label>
-                <select name="paymentMethod" class="mt-2 border rounded w-full p-2">
-                    <option value="esewa">eSewa</option>
-                    <option value="cash-on-delivery">Cash on Delivery</option>
-                </select>
-            </div>
-
-            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded mt-4">Confirm Purchase</button>
-        </form>
+<div class="checkout-container">
+  <div class="product-card md:flex md:items-center md:gap-6">
+    <!-- Product Image -->
+    <div class="w-full md:w-1/2">
+      <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
     </div>
-    <div class="flex-none">
-        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="w-48 h-auto rounded">
+
+    <!-- Product Info -->
+    <div class="product-info w-full md:w-1/2 mt-6 md:mt-0">
+      <h3><%= product.title %></h3>
+      <div class="flex items-center reviews mb-2">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+        <span class="ml-2 text-gray-600 text-sm">41 reviews</span>
+      </div>
+      <p class="text-gray-700"><%= product.description %></p>
+      <p class="text-lg font-semibold">Price: Rs. <%= product.price %></p>
+      <p class="text-lg font-semibold">Shipping: Rs. <%= shippingCharge %></p>
+      <p class="total">Total: Rs. <%= totalAmount %></p>
+
+      <!-- Payment Form -->
+      <form action="/esewa/pay-with-esewa" method="GET">
+        <input type="hidden" name="price" value="<%= totalAmount %>">
+        <input type="hidden" name="oid" value="<%= transaction_uuid %>">
+        <button type="submit" class="payment-btn">
+          <i class="fas fa-wallet"></i> Pay with eSewa
+        </button>
+      </form>
     </div>
+  </div>
 </div>
-</div>
-</div>
+
 </body>
 </html>

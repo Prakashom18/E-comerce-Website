@@ -2,97 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        img {
-            max-width: 150px;
-            height: auto;
-            border-radius: 4px;
-        }
-        a, button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover, button:hover {
-            opacity: 0.9;
-        }
-        .pay-button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-        }
-        .continue-button {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <h1 class="text-3xl font-bold mb-4 text-gray-800">Order Confirmation</h1>
-
+<body class="bg-green-50 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-lg text-center">
+        <h1 class="text-2xl font-bold text-green-600 mb-4">Payment Successful ✅</h1>
+        <p>Your order has been confirmed!</p>
         <p><strong>Order ID:</strong> <%= order._id %></p>
-        <p><strong>Order Status:</strong> <%= order.status %></p>
-        <p><strong>Payment Status:</strong> <%= order.paymentStatus %></p>
-        <p><strong>Total Amount:</strong> $<%= order.totalAmount.toFixed(2) %></p>
-
-        <hr class="my-4">
-
-        <h2 class="text-xl font-semibold mb-2">Products in Your Order</h2>
-        <% order.products.forEach(item => { %>
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <p><strong>Name:</strong> <%= item.productId.name %></p>
-                    <p><strong>Quantity:</strong> <%= item.quantity %></p>
-                    <p><strong>Price:</strong> $<%= item.price.toFixed(2) %></p>
-                </div>
-                <img src="<%= item.productId.imageUrl %>" alt="<%= item.productId.name %>">
-            </div>
-            <hr class="mb-2">
-        <% }) %>
-
-        <h2 class="text-xl font-semibold mt-4 mb-2">User Information</h2>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        <p><strong>Username:</strong> <%= user.username %></p>
-
-        <hr class="my-4">
-
-        <!-- eSewa Payment Integration -->
-        <h2 class="text-xl font-semibold mb-2">Complete Your Payment</h2>
-        <form action="https://uat.esewa.com.np/epay/main" method="POST">
-            <input type="hidden" name="tAmt" value="<%= order.totalAmount.toFixed(2) %>">
-            <input type="hidden" name="amt" value="<%= order.totalAmount.toFixed(2) %>">
-            <input type="hidden" name="txAmt" value="0">
-            <input type="hidden" name="psc" value="0">
-            <input type="hidden" name="pdc" value="0">
-            <input type="hidden" name="scd" value="EPAYTEST"> <!-- Merchant code -->
-            <input type="hidden" name="pid" value="<%= order._id %>">
-            <input type="hidden" name="su" value="http://localhost:3000/esewa_success?oid=<%= order._id %>">
-            <input type="hidden" name="fu" value="http://localhost:3000/esewa_failure?oid=<%= order._id %>">
-            <button type="submit" class="pay-button">Pay with eSewa</button>
-        </form>
-
-        <a href="/products" class="continue-button mt-4">Return to Products</a>
+        <p><strong>Status:</strong> <%= order.status %></p>
+        <p><strong>Payment:</strong> <%= order.paymentStatus %></p>
+        <a href="/products" class="text-blue-600 mt-4 inline-block">Back to Products</a>
     </div>
 </body>
 </html>

@@ -1,69 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="email"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-        .submit-btn {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fef3e7; /* soft light orange */
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ea580c; /* dark orange */
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #10b981; /* green */
+    }
+
+    input[type="text"], input[type="email"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.3s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus {
+      border-color: #f97316; /* orange */
+      box-shadow: 0 4px 12px rgba(249,115,22,0.25);
+    }
+
+    .submit-btn {
+      padding: 12px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #f97316, #fb923c); /* orange gradient */
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .submit-btn:hover {
+      background: linear-gradient(90deg, #fb923c, #f97316);
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Edit Profile</h1>
-        <form action="/profile/edit" method="POST">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" value="<%= user.username %>" required>
+  <div class="container">
+    <h1>Edit Profile</h1>
+    <form action="/profile/edit" method="POST">
+      <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>" required>
+      </div>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<%= user.email %>" required>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= user.email %>" required>
+      </div>
 
-            <button type="submit" class="submit-btn">Update Profile</button>
-        </form>
-    </div>
+      <button type="submit" class="submit-btn">Update Profile</button>
+    </form>
+  </div>
 </body>
 </html>

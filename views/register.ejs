@@ -3,104 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Register - NayaPhone Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #e0f7fa; /* Light cyan background */
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2f6d1a;
+            --primary-light: #56ab2f;
+            --primary-dark: #1a4d0f;
+            --accent: #ff6b35;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e063, #56ab2f);
+            color: var(--dark);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
+            padding: 20px;
         }
+
         .container {
-            background: #ffffff; /* White background for the form */
-            padding: 40px; /* Increased padding */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
             width: 100%;
-            max-width: 500px; /* Increased max-width */
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            min-height: 650px;
+            position: relative;
+        }
+
+        .content-wrapper {
+            display: flex;
+            min-height: 650px;
+        }
+
+        .hero-section {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(47, 109, 26, 0.9), rgba(86, 171, 47, 0.8)),
+                        url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5rem;
             margin-bottom: 20px;
-            color: #00796b; /* Dark teal color for heading */
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-        .welcome-message {
-            margin-bottom: 20px; /* Space below the welcome message */
-            font-size: 18px; /* Font size for the welcome message */
-            color: #00796b; /* Dark teal color for the welcome message */
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        label {
+
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+            animation: floatIcon 15s infinite linear;
+        }
+
+        .floating-icon:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 60%; left: 80%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { top: 80%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { top: 40%; left: 70%; animation-delay: 6s; }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(0) rotate(180deg); }
+            75% { transform: translateY(20px) rotate(270deg); }
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            position: relative;
+        }
+
+        .form-container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary-dark);
             text-align: left;
-            color: #555;
+            font-size: 1rem;
         }
-        input[type="text"], input[type="email"], input[type="password"] {
+
+        .form-group input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #00796b; /* Dark teal border */
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 16px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-            border-color: #004d40; /* Darker teal on focus */
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(47, 109, 26, 0.1), 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
-        button {
+
+        .submit-btn {
             width: 100%;
-            padding: 10px;
-            background-color: #00796b; /* Dark teal button */
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #004d40; /* Darker teal on hover */
-        }
-        a {
-            display: inline-block;
+            transition: all 0.3s ease;
             margin-top: 15px;
-            color: #00796b; /* Dark teal link color */
+            box-shadow: 0 4px 15px rgba(47, 109, 26, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(47, 109, 26, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .form-footer a {
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .form-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
         }
-        @media (max-width: 500px) {
+
+        .form-footer a:hover {
+            color: var(--accent);
+        }
+
+        .form-footer a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 992px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .hero-section {
+                padding: 40px 30px;
+            }
+            
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+            
+            .form-section {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+            
             .container {
-                padding: 30px; /* Adjusted padding for smaller screens */
+                border-radius: 15px;
             }
-            button {
-                font-size: 14px;
+            
+            .hero-section, .form-section {
+                padding: 30px 20px;
             }
-            input[type="text"], input[type="email"], input[type="password"] {
-                font-size: 14px;
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .form-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .logo-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .form-header h2 {
+                font-size: 1.6rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to My E-commerce Website!</h1>
-        <p class="welcome-message">Please register to create an account.</p>
-        <form action="/register" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required>
-            <label for="email">Email:</label>
-            <input type="email" name="email" required>
-            <label for="password">Password:</label>
-            <input type="password" name="password" required>
-            <button type="submit">Register</button>
-        </form>
-        <a href="/login">Already have an account? Login here.</a>
+        <div class="content-wrapper">
+            <div class="hero-section">
+                <div class="floating-icons">
+                    <i class="fas fa-mobile-alt floating-icon"></i>
+                    <i class="fas fa-bolt floating-icon"></i>
+                    <i class="fas fa-camera floating-icon"></i>
+                    <i class="fas fa-wifi floating-icon"></i>
+                </div>
+                
+                <div class="logo">
+                    <i class="fas fa-mobile-alt logo-icon"></i>
+                    <h1>Naya<span>Phone</span> Store</h1>
+                </div>
+                
+                <div class="hero-content">
+                    <h2>Join NayaPhone Store</h2>
+                    <p>Create your account to explore the latest mobile technology and exclusive deals.</p>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Create Account</h2>
+                        <p>Start your journey with us</p>
+                    </div>
+                    
+                    <form action="/register" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Register</button>
+                    </form>
+                    
+                    <div class="form-footer">
+                        <a href="/login">Already have an account? Login here.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
