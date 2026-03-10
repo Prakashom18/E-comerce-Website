@@ -58,14 +58,25 @@ app.get('/register', (req, res) => res.render('register'));
 // ----------------- Authentication -----------------
 app.post('/register', async (req, res) => {
     try {
+        console.log(req.body);   // 👈 add this
+
         const { username, email, password } = req.body;
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, email, password: hashedPassword });
+
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword
+        });
+
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+
+        res.redirect('/products');
+
     } catch (error) {
-        console.error('Error in registration:', error);
-        res.status(500).json({ error: 'Error registering user' });
+        console.error('Registration error:', error);
+        res.status(500).send('Registration failed');
     }
 });
 
