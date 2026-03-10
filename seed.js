@@ -17,7 +17,7 @@ const products = [
         name: 'iPhone 13',
         description: 'The latest model from Apple with advanced features.',
         price: 9998.99,
-        imageUrl: 'https://qualitycomputer.com.np/web/image/product.product/41127/image_1024/Apple%20iPhone%2013%20Pro%20Max%20%28Sierra%20Blue%2C%20128GB%29?unique=6ad7f86',
+        imageUrl : 'https://images-cdn.ubuy.co.id/651a9464fe61d662447e7661-straight-talk-apple-iphone-13-mini.jpg',
         stock: 15
     },
     {
