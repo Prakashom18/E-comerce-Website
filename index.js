@@ -28,10 +28,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 // MongoDB Connection
-mongoose.connect('mongodb://127.0.0.1:27017/testapp1')
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.error('❌ Failed to connect to MongoDB', err));
+require('dotenv').config();
+const mongoose = require('mongoose');
 
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
 // ----------------- JWT Middleware -----------------
 function authenticateToken(req, res, next) {
     const token = req.cookies.token;
